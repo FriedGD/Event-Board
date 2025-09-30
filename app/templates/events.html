@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>특이사항 게시판</title>
+        <script src="{{url_for('static', filename='script.js')}}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+
+    <body>
+        <div>
+            <h1><strong>특이사항 게시판</strong></h1>
+        </div>
+        <a href="{{url_for('main.archive')}}">보관함으로</a>
+
+        <div>
+            <button onclick=toggleForm("new")>글 작성</button>
+            <div id="add_form_new" style="display: none;">
+                <form action="{{url_for('main.add')}}" method="post">
+                    <div>제목:<input type="text" name="subject" required></div>
+                    <div>작성자:<input type="text" name="author" required></div>
+                    <textarea name="content" placeholder="특이사항" rows=10 required></textarea>
+                    <div><input type="submit" value="글 추가"></div>
+                </form>
+            </div>
+        </div>
+
+    {% if event_list %}
+        <ul>
+        {% for event in event_list %}
+            <li>
+                <button onclick=toggleContent({{event.id}})>자세히</button>
+                <strong>{{event.subject}}</strong>
+
+                <div id="contents_{{event.id}}" style="display: none;">
+                    <div style="white-space: pre;" class="detail">{{event.content}}</div>
+                    <br>
+                    <div>작성자:{{event.author}}</div>
+                    <div>작성일:{{event.created_at}}</div>
+                    <div>마지막 수정:{{event.last_modified}}</div>
+                    <form action="{{url_for('main.archiving', event_id=event.id)}}">
+                        <button type="submit">보관함으로</button>
+                    </form>
+
+                    <button onclick=toggleForm({{event.id}})>글 수정</button>
+                    <div id="add_form_{{event.id}}" style="display: none;">
+                        <form action="{{url_for('main.edit', event_id=event.id)}}" method="post">
+                            <textarea name="edited" rows=10 required>{{event.content}}</textarea>
+                            <div><input type="submit" value="완료"></div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>게시물이 없습니다.</p>
+    {% endif %}
+    </body>
+</html>

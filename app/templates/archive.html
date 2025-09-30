@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>특이사항 보관함</title>
+        <script src="{{url_for('static', filename='script.js')}}"></script>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+
+    <body>
+        <div>
+            <h1><strong>특이사항 보관함</strong></h1>
+        </div>
+        <a href="{{url_for('main.forum')}}">게시판으로</a>
+
+    {% if event_list %}
+        <ul>
+        {% for event in event_list %}
+            <li>
+                <button onclick=toggleContent({{event.id}})>자세히</button>
+                <strong>{{event.subject}}</strong>
+
+                <div id="contents_{{event.id}}" style="display: none;">
+                    <div style="white-space: pre;" class="detail">{{event.content}}</div>
+                    <br>
+                    <div>작성자:{{event.author}}</div>
+                    <div>작성일:{{event.created_at}}</div>
+                    <div>마지막 수정:{{event.last_modified}}</div>
+                    <form action="{{url_for('main.restore', event_id=event.id)}}">
+                        <button type="submit">복구</button>
+                    </form>
+                    <form action="{{url_for('main.delete', event_id=event.id)}}">
+                        <button type="submit">삭제</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>게시물이 없습니다.</p>
+    {% endif %}
+    </body>
+</html>

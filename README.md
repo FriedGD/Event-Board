@@ -33,7 +33,7 @@ Follow these steps to get the project running locally:
 ### 1. Clone the Repository
 Clone the repository to download the code to your local machine:
 ```bash
-git clone [YOUR_REPO_URL]
+git clone https://github.com/FriedGD/Event-Board
 ```
 ### 2. Run the Application
 Navigate to the directory where you cloned the code and execute the Flask run command:
